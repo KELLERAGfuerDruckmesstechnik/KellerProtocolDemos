@@ -7,77 +7,77 @@ namespace KellerProtocol.Communication
     /// </summary>
     public interface ICommunication
     {
-        /// <summary>Name der Schnittstelle</summary>
+        /// <summary>Name of the interface (eg. SerialPort => "COM12")</summary>
         string Name { get; }
 
-        /// <summary>= true, wenn die Schnittstelle ein Echo zurückgibt</summary>
+        /// <summary>= true, if the interface gives back an Echo</summary>
         bool EchoOn { get; set; }
 
-        /// <summary>= true, Echo automatisch ermitteln</summary>
+        /// <summary>= true, Echo will be recognized automatically</summary>
         bool AutoEcho { get; set; }
 
-        /// <summary>= true, wenn die Schnittstelle offen ist</summary>
+        /// <summary>= true, when interface is open</summary>
         bool IsOpen { get; }
 
-        /// <summary>gibt die geschwindigkeit der Schnittstelle zurück</summary>
+        /// <summary>speed of interface (With serial ports it is measured in Baudrate)</summary>
         int Speed { get; }
 
-        /// <summary>Schnittstelle</summary>
+        /// <summary>The interface</summary>
         object Interface { get; set; }
 
         /// <summary>
-        /// Daten über die Schnittstelle senden und empfangen
+        /// Send AND receive data from interface
         /// </summary>
-        /// <param name="command">gesendete Daten</param>
-        /// <param name="rcfBuffer">empfangene Daten</param>
-        /// <param name="readByteCount">erwartete anzahl Bytes</param>
+        /// <param name="command">send data</param>
+        /// <param name="rcfBuffer">received data</param>
+        /// <param name="readByteCount">Count of to received bytes</param>
         void Send(byte[] command, out byte[] rcfBuffer, int readByteCount);
 
         /// <summary>
-        /// Daten über die Schnittstelle senden und empfangen
+        /// Send AND receive data from interface
         /// </summary>
-        /// <param name="command">gesendete Daten</param>
-        /// <param name="rcfBuffer">empfangene Daten</param>
-        /// <param name="endSign">empfangen bis zu diesem Zeichen</param>
+        /// <param name="command">send data</param>
+        /// <param name="rcfBuffer">received data</param>
+        /// <param name="endSign">receive until this character</param>
         void Send(byte[] command, out byte[] rcfBuffer, byte endSign);
 
         /// <summary>
-        /// Öffnet die Schnittstelle
+        /// opens the interface
         /// </summary>
-        /// <param name="sender">ausführendes Objekt</param>
+        /// <param name="sender">origin object that wants to open</param>
         void Open(object sender);
 
         /// <summary>
-        /// Schliesst die Schnittstelle
+        /// closes the interface
         /// </summary>
-        /// <param name="sender">ausführendes Objekt</param>
+        /// <param name="sender">origin object that wants to open</param>
         void Close(object sender);
 
         /// <summary>
-        /// Konfiguriert mehrere Parameter der Schnittstelle.
+        /// Configure multiple configure parameters at once
         /// </summary>
-        /// <param name="newConfig">neue Konfiguration</param>
+        /// <param name="newConfig">New parameters</param>
         void SetConfig(Dictionary<string, object> newConfig);
 
         /// <summary>
-        /// Konfiguriert einzelne Parameter der Schnittstelle.
+        /// Configures single configure parameter
         /// </summary>
-        /// <param name="key">Konfigurations-Variable</param>
-        /// <param name="value">neuer Konfigurationswert</param>
-        /// <returns>=true, wenn sich etwas geändert hat</returns>
+        /// <param name="key">configuration key</param>
+        /// <param name="value">configuration value</param>
+        /// <returns>=true, if configuration was changed</returns>
         bool SetConfig(string key, object value);
 
         /// <summary>
-        /// Einzelne Konfiguration auslesen
+        /// Read out one configuration parameter
         /// </summary>
-        /// <param name="key">Schlüssel</param>
-        /// <returns>Wert</returns>
+        /// <param name="key">key</param>
+        /// <returns>Value</returns>
         object GetConfig(string key);
 
         /// <summary>
-        /// Konfiguration auslesen
+        /// Read out all configuration parameters
         /// </summary>
-        /// <returns>Konfiguration der Schnittstelle</returns>
+        /// <returns>all configuration parameters</returns>
         Dictionary<string, object> GetConfigCopy();
     }
 }

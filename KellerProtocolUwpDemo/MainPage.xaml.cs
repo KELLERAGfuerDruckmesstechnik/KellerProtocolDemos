@@ -32,6 +32,12 @@ namespace KellerProtocolUwpDemo
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private const string ComPortName = "COM26";
+        private const int Channel = 1;
+        private const byte Address = 250;
+
+        private readonly SerialPortCommunication _com;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -45,12 +51,6 @@ namespace KellerProtocolUwpDemo
             };
             _com = new SerialPortCommunication(port);
         }
-
-        private readonly SerialPortCommunication _com;
-
-        private const string ComPortName = "COM26";
-        private const int Channel = 1;
-        private const byte Address = 250;
 
         private void GetPortNamesButton_Click(object sender, RoutedEventArgs e)
         {

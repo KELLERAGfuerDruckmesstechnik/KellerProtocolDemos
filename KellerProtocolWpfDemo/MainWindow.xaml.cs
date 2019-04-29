@@ -24,12 +24,12 @@ namespace KellerProtocolWpfDemo
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SerialPortCommunication _com;
-        private string[] _comPorts = new string[0];
-
         private const string ComPortName = "COM29";
         private const int Channel = 1;
         private const byte Address = 250;
+
+        private readonly SerialPortCommunication _com;
+        private string[] _comPorts = new string[0];
 
         public MainWindow()
         {

@@ -10,15 +10,13 @@ namespace KellerProtocol.Communication
     public class SerialPortCommunication : ICommunication
     {
         private SerialPort _serialPort;
-       // private readonly List<object> _useComPort;
         private bool _saveMode;
         private string _comName;
         private readonly Dictionary<string, object> _config;
 
-
         private readonly object _lockThis;
 
-        /// <summary>Standard-Baudrates</summary>
+        /// <summary>default baudrates</summary>
         public static int[] DefaultBaudrates =
         {
             110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400,
@@ -31,13 +29,12 @@ namespace KellerProtocol.Communication
         {
         }
 
-        /// <param name="serialPort">Comport, mit dem gearbeitet werden soll</param>
+        /// <param name="serialPort">COM Port</param>
         /// <param name="autoEcho">If true -> echo will recognized automatically</param>
         private SerialPortCommunication(SerialPort serialPort, bool autoEcho)
         {
             _serialPort = serialPort;
-           // _useComPort = new List<object>();
-            EchoOn = true;
+            this.EchoOn = true;
             _comName = serialPort.PortName;
             _lockThis = _comName; // Lock object should be a object that is unique to the serial port.
 
@@ -65,7 +62,7 @@ namespace KellerProtocol.Communication
         public bool EchoOn { get; set; }
 
         /// <summary>
-        /// =true -> Das Echo wird beim öffnen vom Comport automatisch ermittelt
+        /// =true -> Echo will be recognized automatically during opening of COM port 
         /// </summary>
         public bool AutoEcho
         {
@@ -76,9 +73,8 @@ namespace KellerProtocol.Communication
         /// <inheritdoc />
         public bool IsOpen => (_serialPort != null && _serialPort.IsOpen);
 
-
         /// <summary>
-        /// Baudrate from COM Port (most likely 115000 or 9600)
+        /// Baudrate from COM Port (most likely 9600)
         /// </summary>
         public int Speed
         {
@@ -88,7 +84,6 @@ namespace KellerProtocol.Communication
                 if (_serialPort.BaudRate != value) _serialPort.BaudRate = value;
             }
         }
-
 
 
         /// <summary>
@@ -114,7 +109,7 @@ namespace KellerProtocol.Communication
                     {
                         _serialPort = port;
                         _comName = _serialPort.PortName;
-                        if (/*(_useComPort.Count > 0) &&*/ !_serialPort.IsOpen)
+                        if (!_serialPort.IsOpen)
                             OpenPort();
                     }
                 }
@@ -126,10 +121,7 @@ namespace KellerProtocol.Communication
         }
 
 
-        /// <summary>
-        /// Konfiguriert mehrere Parameter der Schnittstelle.
-        /// </summary>
-        /// <param name="newConfig">neue Konfiguration</param>
+        /// <inheritdoc />
         public void SetConfig(Dictionary<string, object> newConfig)
         {
             foreach (KeyValuePair<string, object> kv in newConfig)
@@ -139,12 +131,7 @@ namespace KellerProtocol.Communication
         }
 
 
-        /// <summary>
-        /// Konfiguriert einzelne Parameter der Schnittstelle.
-        /// </summary>
-        /// <param name="key">Konfigurations-Variable</param>
-        /// <param name="value">neuer Konfigurationswert</param>
-        /// <returns>=true, wenn sich etwas geändert hat</returns>
+        /// <inheritdoc />
         public bool SetConfig(string key, object value)
         {
             bool changed = false;
@@ -246,20 +233,13 @@ namespace KellerProtocol.Communication
             return changed;
         }
 
-        /// <summary>
-        /// Einzelne Konfiguration auslesen
-        /// </summary>
-        /// <param name="key">Schlüssel</param>
-        /// <returns>Wert</returns>
+        /// <inheritdoc />
         public object GetConfig(string key)
         {
             return _config.ContainsKey(key) ? _config[key] : null;
         }
 
-        /// <summary>
-        /// Konfiguration auslesen 
-        /// </summary>
-        /// <returns>Konfiguration der Schnittstelle</returns>
+        /// <inheritdoc />
         public Dictionary<string, object> GetConfigCopy()
         {
             var cfg = new Dictionary<string, object>();
@@ -269,12 +249,7 @@ namespace KellerProtocol.Communication
             return cfg;
         }
 
-        /// <summary>
-        /// Daten über die Schnittstelle senden und empfangen
-        /// </summary>
-        /// <param name="command">gesendete Daten</param>
-        /// <param name="rcfBuffer">empfangene Daten</param>
-        /// <param name="readByteCount">erwartete anzahl Bytes</param>
+        /// <inheritdoc />
         public void Send(byte[] command, out byte[] rcfBuffer, int readByteCount)
         {
             rcfBuffer = new byte[readByteCount];
@@ -285,16 +260,16 @@ namespace KellerProtocol.Communication
                 try
                 {
                     //    if (!_serialPort.IsOpen) return;
-                    // Empfangsbuffer leeren
+                    // clear received buffer
                     _serialPort.ReadExisting();
 
-                    // Command schreiben
+                    // write command data
                     if (_saveMode)
                         Thread.Sleep(1);
                     _serialPort.Write(command, 0, command.Length);
 
 
-                    // Empfangen
+                    // receive data
                     int a = 0;
                     while (a < readByteCount)
                     {
@@ -311,12 +286,7 @@ namespace KellerProtocol.Communication
             }
         }
 
-        /// <summary>
-        /// Daten über die Schnittstelle senden und empfangen
-        /// </summary>
-        /// <param name="command">gesendete Daten</param>
-        /// <param name="rcfBuffer">empfangene Daten</param>
-        /// <param name="endSign">End-Zeichen</param>
+        /// <inheritdoc />
         public void Send(byte[] command, out byte[] rcfBuffer, byte endSign)
         {
             rcfBuffer = new byte[0];
@@ -327,15 +297,15 @@ namespace KellerProtocol.Communication
             {
                 try
                 {
-                    // Empfangsbuffer leeren
+                    // clear received buffer
                     _serialPort.ReadExisting();
 
-                    // Command schreiben
+                    // write command data
                     if (_saveMode)
                         Thread.Sleep(1);
                     _serialPort.Write(command, 0, command.Length);
 
-                    // Empfangen
+                    // receive data
                     do
                     {
                         Array.Resize(ref rcfBuffer, rcfBuffer.Length + 1);
@@ -349,17 +319,16 @@ namespace KellerProtocol.Communication
         }
 
         /// <summary>
-        /// Comport öffnen. Der Comport wird "virtuell" für jedes übergebene Objekt geöffnet
-        /// und erst wieder geschlossen wenn das letzte Object den comport wieder geschlossen hat.
+        /// Opens COM port. The COM port will be opened "virtually" for each object
+        /// and closed again when the last port is closed.
         /// </summary>
-        /// <param name="sender">Object das den comport öffnen will.</param>
+        /// <param name="sender">Object that wants to open the COM port. Used mostly with "this"</param>
         public void Open(object sender)
         {
             if (_serialPort == null) return;
 
             lock (_lockThis)
             {
-                /*_useComPort.Add(sender);*/
                 if (!_serialPort.IsOpen)
                     OpenPort();
             }
@@ -382,7 +351,6 @@ namespace KellerProtocol.Communication
             }
             catch (UnauthorizedAccessException)
             {
-                //log.log(LogMode.error, "Comport.closeComport():" + e.GetType().ToString() + " -> " + e.Message); 
                 //Debug.WriteLine("Comport OpenPort():" + e.GetType().ToString() + " -> " + e.Message);
             }
             catch (IOException)
@@ -400,7 +368,7 @@ namespace KellerProtocol.Communication
         public void Close(object sender)
         {
        //     _useComPort.Remove(sender);
-            if ((_serialPort != null) /*&& (_useComPort.Count == 0)*/ && (_serialPort.IsOpen))
+            if ((_serialPort != null) && (_serialPort.IsOpen))
             {
                 lock (_lockThis)
                 {
@@ -412,13 +380,11 @@ namespace KellerProtocol.Communication
                         Thread.Sleep(500);
                     }
                     catch (UnauthorizedAccessException)
-                    {
-                        //log.log(LogMode.error, "Comport.closeComport():" + e.GetType().ToString() + " -> " + e.Message); 
+                    {                      
                     }
                 }
             }
         }
-
 
         private void CheckEcho()
         {
@@ -429,14 +395,12 @@ namespace KellerProtocol.Communication
                 _serialPort.Write("e");
                 Thread.Sleep(250);
                 EchoOn = (_serialPort.ReadExisting() == "e");
-
-                //log.log(LogMode.debug, "Echo: " + echoOn.ToString());
             }
         }
 
 
         /// <summary>
-        /// Serielle Schnittstelle als String ausgeben
+        /// Outputs the COM port name eg. "COM1"
         /// </summary>
         /// <returns></returns>
         public override string ToString()
