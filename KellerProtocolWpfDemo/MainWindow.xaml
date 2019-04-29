@@ -9,7 +9,12 @@
     <Grid>
         <StackPanel Margin="10,0,10,0" CanVerticallyScroll="True" >
             <TextBlock TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud  nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." Height="75" Margin="0,0,-0.4,0"/>
-            <Button x:Name="GetPortsButton" Content="Get Serial Ports" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="150" Click="GetPortsButton_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Button x:Name="GetPortsButton" HorizontalAlignment="Left"  Width="150" Height="20" Click="GetPortsButton_Click" Content="Get Port names"></Button>
+                <ComboBox x:Name="ComPortListComboBox"  SelectionChanged="ComPortListComboBox_SelectionChanged" Width="100" Height="20" Margin="10,0,0,0"/>
+                <Label Content="Chosen COM port is:" Margin="30,0,0,0"/>
+                <Label x:Name="ChosenComPortLabel" Content="COM29"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                 <Button x:Name="F48Button" Content="F48 (Init)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="F48Button_Click" />
                 <Button x:Name="F73Button" Content="F73 (Value)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="F73Button_Click"/>
