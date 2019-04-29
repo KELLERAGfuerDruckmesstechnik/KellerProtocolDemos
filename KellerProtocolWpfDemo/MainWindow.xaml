@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KellerProtocolWpfDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="480" Width="600">
+        Title="MainWindow" Height="600" Width="600">
     <Grid>
         <StackPanel Margin="10,0,10,0" CanVerticallyScroll="True" >
-            <TextBlock TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud  nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." Height="75" Margin="0,0,-0.4,0"/>
+            <TextBlock TextWrapping="Wrap" Text="This is the KellerProtocol WPF demo that uses the KellerProtocol in .NET Standard 2.0&#x0a;Source can be found on https://github.com/KELLERAGfuerDruckmesstechnik/KellerProtocolDemos&#x0a;&#x0a;Use:&#x0a;-  Press 'Get Port names' button to get a list of existing ports.&#x0a;- Select the COM port that has a KELLER device attached.&#x0a;- Press 'F48' to initialize the device once.&#x0a;- Press 'F73' to get the value from channel 1 (hardcoded)" Height="143" Margin="0,0,-0.4,0"/>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <Button x:Name="GetPortsButton" HorizontalAlignment="Left"  Width="150" Height="20" Click="GetPortsButton_Click" Content="Get Port names"></Button>
                 <ComboBox x:Name="ComPortListComboBox"  SelectionChanged="ComPortListComboBox_SelectionChanged" Width="100" Height="20" Margin="10,0,0,0"/>
@@ -19,7 +19,7 @@
                 <Button x:Name="F48Button" Content="F48 (Init)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="F48Button_Click" />
                 <Button x:Name="F73Button" Content="F73 (Value)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="F73Button_Click"/>
             </StackPanel>
-            <TextBox x:Name="OutputTextbox" TextWrapping="Wrap" Text="" VerticalScrollBarVisibility="Visible" VerticalAlignment="Center" Height="310"/>
+            <TextBox x:Name="OutputTextbox" TextWrapping="Wrap" Text="" VerticalScrollBarVisibility="Visible" VerticalAlignment="Center" Height="340" Margin="0,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
