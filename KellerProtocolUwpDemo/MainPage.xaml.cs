@@ -52,6 +52,8 @@ namespace KellerProtocolUwpDemo
         public MainPage()
         {
             this.InitializeComponent();
+
+            //FoundComPorts = new ObservableCollection<string>{"COM1"}; // It is possible to hardcode the COM port and ignore the slow port search process
         }
 
         private async void GetPortNamesButton_Click(object sender, RoutedEventArgs e)
@@ -78,6 +80,11 @@ namespace KellerProtocolUwpDemo
 
         private SerialPortCommunication InitializeSerialPortCommunication(string comPortName)
         {
+            if (_selectedComPort != null && comPortName!=_selectedComPort)
+            {
+                _selectedComPort = comPortName;
+            }
+
             var port = new System.IO.Ports.SerialPort(comPortName, 9600, Parity.None, 8, StopBits.One)
             {
                 DtrEnable = true,
