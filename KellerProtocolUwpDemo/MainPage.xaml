@@ -5,24 +5,36 @@
     xmlns:local="using:KellerProtocolUwpDemo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Width="854" Height="768">
+    mc:Ignorable="d" Width="854" MinHeight="800" Height="800">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="854" Height="768">
-        <StackPanel Margin="10" Width="836">
-            <TextBlock TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="This is the KellerProtocol UWP demo that uses the KellerProtocol in .NET Standard 2.0&#x0a;Source and protocol description can be found on https://github.com/KELLERAGfuerDruckmesstechnik/KellerProtocolDemos&#x0a;&#x0a;Use:&#x0a;-  Press 'Get Port Names' button to get a list of existing ports. This will take a couple of seconds.&#x0a;- Select the COM port that has a KELLER device attached.&#x0a;- Press 'F48' to initialize the device once.&#x0a;- Press 'F73' to get the value from  the chosen channel"/>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
-                <Button x:Name="GetPortsButton" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Center" Content="Get Port Names (SLOW)" Click="GetPortNamesButton_Click" ></Button>
-                <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">COM Ports</TextBlock>
-                <ComboBox x:Name="ComPortComboBox" SelectionChanged="ComPortListComboBox_SelectionChanged" VerticalAlignment="Center" HorizontalAlignment="Stretch" PlaceholderText="Press 'Get Port Names'"/>
-                <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">Channel</TextBlock>
-                <TextBox x:Name="ChannelTextBox" Text="1" SelectionChanged="ChannelNumber_Changed" HorizontalAlignment="Stretch" VerticalAlignment="Center" PlaceholderText="Must be a number. E.g. &quot;1&quot;"/>
-                <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">Address</TextBlock>
-                <TextBox x:Name="AddressTextBox" Text="250" SelectionChanged="Address_Changed" VerticalAlignment="Center" HorizontalAlignment="Stretch" PlaceholderText="Must be a number. E.g. &quot;250&quot;"></TextBox>
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="400" Height="400"/>
+            <RowDefinition MinHeight="400" Height="400"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel Margin="10">
+                <TextBlock TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="This is the KellerProtocol UWP demo that uses the KellerProtocol in .NET Standard 2.0&#x0a;Source and protocol description can be found on https://github.com/KELLERAGfuerDruckmesstechnik/KellerProtocolDemos&#x0a;&#x0a;Use:&#x0a;-  Press 'Get Port Names' button to get a list of existing ports. This will take a couple of seconds.&#x0a;- Select the COM port that has a KELLER device attached.&#x0a;- Press 'F48' to initialize the device once.&#x0a;- Press 'F73' to get the value from  the chosen channel"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
+                    <Button x:Name="GetPortsButton" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Center" Content="Get Port Names (SLOW)" Click="GetPortNamesButton_Click" ></Button>
+                    <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">COM Ports</TextBlock>
+                    <ComboBox x:Name="ComPortComboBox" SelectionChanged="ComPortListComboBox_SelectionChanged" VerticalAlignment="Center" HorizontalAlignment="Stretch" PlaceholderText="Press 'Get Port Names'"/>
+                    <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">Channel</TextBlock>
+                    <TextBox x:Name="ChannelTextBox" Text="1" SelectionChanged="ChannelNumber_Changed" HorizontalAlignment="Stretch" VerticalAlignment="Center" PlaceholderText="Must be a number. E.g. &quot;1&quot;"/>
+                    <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">Address</TextBlock>
+                    <TextBox x:Name="AddressTextBox" Text="250" SelectionChanged="Address_Changed" VerticalAlignment="Center" HorizontalAlignment="Stretch" PlaceholderText="Must be a number. E.g. &quot;250&quot;"></TextBox>
+                </StackPanel>
+
+                <Button x:Name="F48Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F48 (Init)" Click="F48Button_Click" Margin="10"></Button>
+                <Button x:Name="F73Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F73 (Get Value)" Click="F73Button_Click" Margin="10"></Button>
             </StackPanel>
+        </Grid>
 
-            <Button x:Name="F48Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F48 (Init)" Click="F48Button_Click" Margin="10"></Button>
-            <Button x:Name="F73Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F73 (Get Value)" Click="F73Button_Click" Margin="10"></Button>
-            <TextBlock x:Name="OutputTextBlock" TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="" FocusVisualPrimaryBrush="#E5E2E2E2" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Margin="0,0,0,0"  />
-        </StackPanel>
+        <Grid Grid.Row="1" Background="#CCF0F0F0" >
+            <TextBlock x:Name="OutputTextBlock" TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="" ScrollViewer.VerticalScrollBarVisibility="Visible"  >
+            </TextBlock>
+        </Grid>
     </Grid>
 </Page>
