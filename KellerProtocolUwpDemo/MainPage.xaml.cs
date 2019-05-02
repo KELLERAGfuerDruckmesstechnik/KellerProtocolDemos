@@ -32,7 +32,7 @@ namespace KellerProtocolUwpDemo
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private string _selectedComPort = "";
+        private string _selectedComPort = null;
         private byte _selectedChannel = 1;
         private byte _selectedAddress = 250;
 
@@ -54,10 +54,9 @@ namespace KellerProtocolUwpDemo
         public MainPage()
         {
             this.InitializeComponent();
-            //  _com = InitializeSerialPortCommunication("COM26");
         }
 
-        private static SerialPortCommunication InitializeSerialPortCommunication(string comPortName)
+        private SerialPortCommunication InitializeSerialPortCommunication(string comPortName)
         {
             var port = new System.IO.Ports.SerialPort(comPortName, 9600, Parity.None, 8, StopBits.One)
             {
@@ -85,8 +84,10 @@ namespace KellerProtocolUwpDemo
             {
                 _selectedComPort = cmb.SelectedItem?.ToString();
             }
-
-            _com = InitializeSerialPortCommunication(_selectedComPort);
+            if (_selectedComPort != null)
+            {
+                _com = InitializeSerialPortCommunication(_selectedComPort);
+            }
         }
 
         private void F48Button_Click(object sender, RoutedEventArgs e)
@@ -103,7 +104,7 @@ namespace KellerProtocolUwpDemo
             try
             {
                 _com.Open(this);
-                KellerProtocol.KellerProtocol.F48(_com, (byte)_selectedAddress);
+                KellerProtocol.KellerProtocol.F48(_com, (byte)_selectedAddress);  // = is the same as KellerProtocol.KellerProtocol.WakeUp(_com);
                 _com.Close(this);
                 OutputTextBlock.Text += $"{DateTime.Now}: Executed F48 on Port {_selectedComPort}{Environment.NewLine}";
             }
@@ -142,7 +143,7 @@ namespace KellerProtocolUwpDemo
         /// https://stackoverflow.com/questions/48495093/how-to-get-available-serial-ports-in-uwp
         /// </summary>
         /// <returns></returns>
-        private async Task<ObservableCollection<string>> GetPortNamesUwpAsync()
+        private static async Task<ObservableCollection<string>> GetPortNamesUwpAsync()
         {
             string aqs = SerialDevice.GetDeviceSelector();
             DeviceInformationCollection deviceCollection = await DeviceInformation.FindAllAsync(aqs);
@@ -150,7 +151,6 @@ namespace KellerProtocolUwpDemo
             foreach (DeviceInformation item in deviceCollection)
             {
                 ////speed up with excluding irrelevant devices
-                ////can be removed to show all devices
                 //if (!item.Name.StartsWith("K1") && !item.Name.StartsWith("COM"))
                 //{
                 //    continue;
@@ -162,8 +162,11 @@ namespace KellerProtocolUwpDemo
                     {
                         continue;
                     }
+
                     string portName = serialDevice.PortName;
                     portNamesList.Add(portName);
+                    
+                    serialDevice.Dispose(); // It is necessary to dispose the port as FromIdAsync() seems to open the port but close it!
                 }
                 catch
                 {

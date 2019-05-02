@@ -134,8 +134,9 @@ namespace KellerProtocol.Communication
         /// <inheritdoc />
         public bool SetConfig(string key, object value)
         {
+            if (_serialPort == null) return false;
+
             bool changed = false;
-            if (_serialPort == null) return changed;
 
             switch (key)
             {
@@ -367,21 +368,20 @@ namespace KellerProtocol.Communication
         /// <param name="sender">Object representing the COM port to be closed</param>
         public void Close(object sender)
         {
-       //     _useComPort.Remove(sender);
-            if ((_serialPort != null) && (_serialPort.IsOpen))
+            //     _useComPort.Remove(sender);
+            if ((_serialPort == null) || (!_serialPort.IsOpen)) return;
+
+            lock (_lockThis)
             {
-                lock (_lockThis)
+                try
                 {
-                    try
-                    {
-                        Debug.WriteLine("?Try to close Port: (before) " + _serialPort.PortName);
-                        _serialPort.Close();
-                        Debug.WriteLine("?Try to close Port: (wait) " + _serialPort.PortName);
-                        Thread.Sleep(500);
-                    }
-                    catch (UnauthorizedAccessException)
-                    {                      
-                    }
+                    Debug.WriteLine("?Try to close Port: (before) " + _serialPort.PortName);
+                    _serialPort.Close();
+                    Debug.WriteLine("?Try to close Port: (wait) " + _serialPort.PortName);
+                    Thread.Sleep(500);
+                }
+                catch (UnauthorizedAccessException)
+                {                      
                 }
             }
         }
