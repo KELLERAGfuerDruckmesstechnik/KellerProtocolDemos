@@ -23,8 +23,6 @@ using System.Threading.Tasks;
 using System.IO.Ports; // From Nuget
 using KellerProtocol.Communication; // Referenced project
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace KellerProtocolUwpDemo
 {
     /// <summary>
@@ -56,18 +54,6 @@ namespace KellerProtocolUwpDemo
             this.InitializeComponent();
         }
 
-        private SerialPortCommunication InitializeSerialPortCommunication(string comPortName)
-        {
-            var port = new System.IO.Ports.SerialPort(comPortName, 9600, Parity.None, 8, StopBits.One)
-            {
-                DtrEnable = true,
-                RtsEnable = true,
-                ReadTimeout = 200,
-                WriteTimeout = 200,
-            };
-            return new SerialPortCommunication(port);
-        }
-
         private async void GetPortNamesButton_Click(object sender, RoutedEventArgs e)
         {
             // var ports = SerialPort.GetPortNames();  <--- Won't work (for now)
@@ -88,6 +74,18 @@ namespace KellerProtocolUwpDemo
             {
                 _com = InitializeSerialPortCommunication(_selectedComPort);
             }
+        }
+
+        private SerialPortCommunication InitializeSerialPortCommunication(string comPortName)
+        {
+            var port = new System.IO.Ports.SerialPort(comPortName, 9600, Parity.None, 8, StopBits.One)
+            {
+                DtrEnable = true,
+                RtsEnable = true,
+                ReadTimeout = 200,
+                WriteTimeout = 200,
+            };
+            return new SerialPortCommunication(port);
         }
 
         private void F48Button_Click(object sender, RoutedEventArgs e)

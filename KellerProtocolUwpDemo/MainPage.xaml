@@ -5,11 +5,11 @@
     xmlns:local="using:KellerProtocolUwpDemo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Width="854" Height="768">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Margin="10">
-            <TextBlock TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="854" Height="768">
+        <StackPanel Margin="10" Width="836">
+            <TextBlock TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="This is the KellerProtocol UWP demo that uses the KellerProtocol in .NET Standard 2.0&#x0a;Source and protocol description can be found on https://github.com/KELLERAGfuerDruckmesstechnik/KellerProtocolDemos&#x0a;&#x0a;Use:&#x0a;-  Press 'Get Port Names' button to get a list of existing ports. This will take a couple of seconds.&#x0a;- Select the COM port that has a KELLER device attached.&#x0a;- Press 'F48' to initialize the device once.&#x0a;- Press 'F73' to get the value from  the chosen channel"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
                 <Button x:Name="GetPortsButton" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Center" Content="Get Port Names (SLOW)" Click="GetPortNamesButton_Click" ></Button>
                 <TextBlock Margin="30,0,5,0" VerticalAlignment="Center">COM Ports</TextBlock>
@@ -20,11 +20,9 @@
                 <TextBox x:Name="AddressTextBox" Text="250" SelectionChanged="Address_Changed" VerticalAlignment="Center" HorizontalAlignment="Stretch" PlaceholderText="Must be a number. E.g. &quot;250&quot;"></TextBox>
             </StackPanel>
 
-            <Button x:Name="F48Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F48 (Init)" Click="F48Button_Click" Margin="10" Visibility="Visible" RequestedTheme="Light"></Button>
+            <Button x:Name="F48Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F48 (Init)" Click="F48Button_Click" Margin="10"></Button>
             <Button x:Name="F73Button" VerticalAlignment="Center" Height="50" Width="200" HorizontalAlignment="Left" Content="F73 (Get Value)" Click="F73Button_Click" Margin="10"></Button>
-            <TextBlock x:Name="OutputTextBlock" TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text=""  />
-            <FlipView/>
-
+            <TextBlock x:Name="OutputTextBlock" TextWrapping="WrapWholeWords" Style="{ThemeResource BodyTextBlockStyle}" Text="" FocusVisualPrimaryBrush="#E5E2E2E2" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Margin="0,0,0,0"  />
         </StackPanel>
     </Grid>
 </Page>
