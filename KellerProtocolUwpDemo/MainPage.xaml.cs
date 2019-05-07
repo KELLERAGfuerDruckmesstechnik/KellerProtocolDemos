@@ -33,7 +33,8 @@ namespace KellerProtocolUwpDemo
         private string _selectedComPort = null;
         private byte _selectedChannel = 1;
         private byte _selectedAddress = 250;
-
+        private const int BaudRate = 9600; // Default is 9600, this value can be changed (eg. to 115k)
+        
         private ObservableCollection<string> _foundComPorts = new ObservableCollection<string>();
 
         private ObservableCollection<string> FoundComPorts
@@ -85,7 +86,7 @@ namespace KellerProtocolUwpDemo
                 _selectedComPort = comPortName;
             }
 
-            var port = new System.IO.Ports.SerialPort(comPortName, 9600, Parity.None, 8, StopBits.One)
+            var port = new System.IO.Ports.SerialPort(comPortName, BaudRate, Parity.None, 8, StopBits.One)
             {
                 DtrEnable = true,
                 RtsEnable = true,
@@ -171,7 +172,7 @@ namespace KellerProtocolUwpDemo
                     string portName = serialDevice.PortName;
                     portNamesList.Add(portName);
                     
-                    serialDevice.Dispose(); // It is necessary to dispose the port as FromIdAsync() seems to open the port but close it!
+                    serialDevice.Dispose(); // It is necessary to dispose the port as FromIdAsync() seems to open the port but prevent it from close it!
                 }
                 catch
                 {
